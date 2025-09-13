@@ -1,1 +1,1 @@
-# hotel-booking
+# Hotel Booking Project
