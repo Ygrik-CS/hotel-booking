@@ -1,10 +1,6 @@
 from datetime import date, timedelta
 import json
 import random
-import os
-import os
-os.makedirs("data", exist_ok=True)  # создаёт папку, если её ещё нет
-
 
 # Отели
 hotels = [
@@ -91,6 +87,6 @@ seed = {
 
 # Запись в JSON файл
 with open("./data/seed.json", "w", encoding="utf-8") as f:
-    json.dump(seed, f, indent=4, ensure_ascii=False)
+    json.dump(seed, f, indent=4)
 
 print("seed.json создан!")
