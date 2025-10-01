@@ -34,7 +34,7 @@ for hotel in hotels:
 
         # 3 тарифа
         for tariff in ["Standard", "Non-refundable", "Breakfast included"]:
-            rate_id = f"r{rate_counter}"
+            rate_id = f"rate-{rate_counter}"
             rates.append({
                 "id": rate_id,
                 "room_type_id": room_type_id,

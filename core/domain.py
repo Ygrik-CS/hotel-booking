@@ -4,7 +4,7 @@ class Hotel(NamedTuple):
     id: str
     name: str
     city: str
-    stars: int
+    stars: float
     features: Tuple[str, ...]
 
 class RoomType(NamedTuple):
