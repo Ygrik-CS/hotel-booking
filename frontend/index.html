@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<title>Travel Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="menu.js"></script>
+</head>
+<body class="bg-slate-900 text-white antialiased">
+
+<!-- карускль -->
+  <section class="max-w-6xl mx-auto px-4 py-8">
+    <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+      <!-- слайд -->
+      <a id="heroLink" href="#" target="_blank" rel="noopener" class="block">
+        <img id="heroImg"
+            src="images/pexels-timrael-30530387.jpg" alt="Hero" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100 select-none pointer-events-none" />
+      </a>
+
+      <!-- градиент -->
+      <div class="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-slate-900/40 to-slate-900/60"></div>
+
+      <!-- контент -->
+      <div class="relative z-10 p-6 md:p-10">
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white text-center">
+          Your Trip Starts Here
+        </h1>
+        
+        <!-- табы -->
+        <div class="mt-8 flex justify-center">
+          <div class="inline-flex rounded-full bg-slate-800/80 backdrop-blur px-2 py-1 ring-1 ring-white/10 shadow-lg">
+            <button data-tab="hotels"
+                    class="tab-btn active inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transitiontext-white bg-slate-700 shadow-inner"> <span>Hotels & Homes</span>
+            </button>
+        </div>
+        </div>
+
+        <!-- поиск -->
+        <div class="mt-6 md:mt-8">
+          <div class="bg-white text-slate-900 rounded-2xl shadow-2xl ring-1 ring-black/5 p-3 md:p-4">
+            <form id="searchForm" class="grid grid-cols-1 md:grid-cols-[2fr,1fr,1fr,1.6fr,auto] gap-3 items-stretch">
+              <label class="relative">
+                <span class="absolute left-3 top-2.5 text-slate-400"><i class='bx bx-current-location' ></i></span>
+                <input id="destInput" type="text" required class="w-full h-12 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="City, airport, region, landmark or property name" />
+              </label>
+
+              <!-- check-in -->
+              <label class="relative">
+              
+                <input id="checkIn" type="date" required class="w-full h-12 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <span class="absolute right-3 top-2 text-xs text-slate-400" id="nightsHint"></span>
+              </label>
+
+              <!-- check-out -->
+              <label class="relative">
+              
+                <input id="checkOut" type="date" required class="w-full h-12 pl-9 pr-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              </label>
+
+              <!-- guests & rooms -->
+              <div class="relative">
+                <button id="grToggle" type="button"
+                        class="w-full h-12 px-4 rounded-xl bg-slate-50 border border-slate-200 text-left flex items-center justify-between hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select id="qRooms" class="outline-none">
+                          <option>1 room</option><option>2 rooms</option><option>3 rooms</option>
+                        </select>
+                        <select id="qAdults" class="outline-none">
+                          <option>2 adults</option><option>1 adult</option><option>3 adults</option><option>4 adults</option><option>5 adults</option>
+                        </select>
+                        <select id="qChildren" class="outline-none">
+                          <option>0 children</option><option>1 child</option><option>2 children</option>
+                        </select>
+                </button>
+
+                <div id="grDropdown" class="absolute z-20 mt-2 w-72 bg-white rounded-xl shadow-2xl ring-1 ring-black/5 p-3 hidden">
+                  <!-- counter row helper -->
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between py-2">
+                      <span class="font-medium">Adults</span>
+                      <div class="inline-flex items-center gap-2">
+                        <button type="button" data-counter="adults" data-op="-" class="ctr px-3 py-1 rounded-lg bg-slate-100">−</button>
+                        <span id="adultsVal" class="w-6 text-center">2</span>
+                        <button type="button" data-counter="adults" data-op="+" class="ctr px-3 py-1 rounded-lg bg-slate-100">+</button>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                      <span class="font-medium">Children</span>
+                      <div class="inline-flex items-center gap-2">
+                        <button type="button" data-counter="children" data-op="-" class="ctr px-3 py-1 rounded-lg bg-slate-100">−</button>
+                        <span id="childrenVal" class="w-6 text-center">0</span>
+                        <button type="button" data-counter="children" data-op="+" class="ctr px-3 py-1 rounded-lg bg-slate-100">+</button>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                      <span class="font-medium">Rooms</span>
+                      <div class="inline-flex items-center gap-2">
+                        <button type="button" data-counter="rooms" data-op="-" class="ctr px-3 py-1 rounded-lg bg-slate-100">−</button>
+                        <span id="roomsVal" class="w-6 text-center">1</span>
+                        <button type="button" data-counter="rooms" data-op="+" class="ctr px-3 py-1 rounded-lg bg-slate-100">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" id="grClear" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700">Reset</button>
+                    <button type="button" id="grApply" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white shadow">Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- search -->
+              <a href="hotel.html" class="h-12 px-6 rounded-xl bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-center">
+              <i class='bx bx-search mr-2'></i> Search
+              </a>
+
+            </form>
+          </div>
+        </div>
+        <div class="h-6"></div>
+      </div>
+    </div>
+</section>
+<!-- блок отелей -->
+  <section class="max-w-6xl mx-auto px-4 py-10">
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Отель 1 -->
+    <div class="group relative inline-block">
+      <!-- градиент -->
+    <div
+      class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-tr from-[#00ff75] to-[#3700ff] blur-sm">
+    </div>
+
+    <!-- Карточка -->
+    <a href="hotel.html" target="_blank" class="relative block w-full h-full rounded-2xl bg-white overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_1px_rgba(0,255,117,0.3)]">
+    <div class="relative">
+      <img src="images/hotelbeles.webp" alt="Hotel 1" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" class="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-105" />
+      <span class="absolute top-3 left-3 bg-indigo-600 text-white px-2 py-1 text-xs rounded-lg shadow">
+        Top Choice
+      </span>
+    </div>
+
+    <!-- Контент -->
+    <div class="p-4">
+      <h3 class="font-semibold text-lg text-slate-800">Beles Apartments</h3>
+      <p class="text-slate-500 text-sm">Almaty, Kazakhstan</p>
+      <div class="mt-3">
+        <span class="text-indigo-600 font-bold">94$</span> / night
+      </div>
+      <button class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-xl font-medium transition hover:bg-indigo-700">
+        Book now
+      </button>
+    </div>
+  </a>
+</div>
+
+
+    <!-- Отель 2 -->
+    <div class="group relative inline-block">
+      <!-- градиент -->
+    <div
+      class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-tr from-[#00ff75] to-[#3700ff] blur-sm">
+    </div>
+
+    <!-- Карточка -->
+    <a href="hotel.html" target="_blank" class="relative block w-full h-full rounded-2xl bg-white overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_1px_rgba(0,255,117,0.3)]">
+    <div class="relative">
+      <img src="images/1mc6y12000ljsty04F602_R_960_660_R5_D.jpg" alt="Hotel 1" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" class="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-105" />
+    </div>
+
+    <!-- Контент -->
+    <div class="p-4">
+      <h3 class="font-semibold text-lg text-slate-800">Pana Ayusai</h3>
+      <p class="text-slate-500 text-sm">Almaty, Kazakhstan</p>
+      <div class="mt-3">  
+        <span class="text-indigo-600 font-bold">73$</span> / night
+      </div>
+      <button class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-xl font-medium transition hover:bg-indigo-700">
+        Book now
+      </button>
+    </div>
+  </a>
+</div>
+
+    <!-- Отель 3 -->
+    <div class="group relative inline-block">
+      <!-- градиент -->
+    <div
+      class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-tr from-[#00ff75] to-[#3700ff] blur-sm">
+    </div>
+
+    <!-- Карточка -->
+    <a href="hotel.html" target="_blank" class="relative block w-full h-full rounded-2xl bg-white overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_1px_rgba(0,255,117,0.3)]">
+    <div class="relative">
+      <img src="images/1mc4g12000g5bgmp6F5AA_R_960_660_R5_D.jpg " alt="Hotel 1" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" class="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-105" />
+    </div>
+
+    <!-- Контент -->
+    <div class="p-4">
+      <h3 class="font-semibold text-lg text-slate-800">Oi-Qaragai Mountain Resort</h3>
+      <p class="text-slate-500 text-sm">Almaty, Kazakhstan</p>
+      <div class="mt-3">
+        <span class="text-indigo-600 font-bold">112$</span> / night
+      </div>
+      <button class="mt-4 w-full py-2 bg-indigo-600 text-white rounded-xl font-medium transition hover:bg-indigo-700">
+        Book now
+      </button>
+    </div>
+  </a>
+</div>
+
+
+

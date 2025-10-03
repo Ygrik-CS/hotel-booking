@@ -1,25 +1,21 @@
-from dataclasses import dataclass
-from typing import Tuple, Optional, Dict
+from typing import NamedTuple, Tuple, Optional
 
-@dataclass(frozen=True)
-class Hotel:
+class Hotel(NamedTuple):
     id: str
     name: str
-    stars: int
     city: str
+    stars: float
     features: Tuple[str, ...]
 
-@dataclass(frozen=True)
-class RoomType:
+class RoomType(NamedTuple):
     id: str
     hotel_id: str
-    name: str
+    name: str   
     capacity: int
     beds: Tuple[str, ...]
     features: Tuple[str, ...]
 
-@dataclass(frozen=True)
-class RatePlan:
+class RatePlan(NamedTuple):
     id: str
     hotel_id: str
     room_type_id: str
@@ -28,62 +24,55 @@ class RatePlan:
     refundable: bool
     cancel_before_days: Optional[int]
 
-@dataclass(frozen=True)
-class Price:
+class Price(NamedTuple):
     id: str
-    rate_id: str
-    date: str  # ISO YYYY-MM-DD
-    amount: int  # integer (cents / tiyin)
+    rate_id: str 
+    date: str
+    amount: int 
     currency: str
 
-@dataclass(frozen=True)
-class Availability:
+class Availability(NamedTuple):
     id: str
-    room_type_id: str
-    date: str  # ISO date
+    room_type_id: str 
+    date: str 
     available: int
 
-@dataclass(frozen=True)
-class Guest:
+class Guest(NamedTuple):
     id: str
     name: str
-    email: str
+    email: str 
 
-@dataclass(frozen=True)
-class CartItem:
+class CartItem(NamedTuple):
     id: str
     hotel_id: str
-    room_type_id: str
+    room_type_id: str 
     rate_id: str
-    checkin: str
+    checkin: str 
     checkout: str
     guests: int
 
-@dataclass(frozen=True)
-class Booking:
+class Booking(NamedTuple):
     id: str
-    guest_id: str
-    items: Tuple[CartItem, ...]
+    guest_id: str 
+    items: Tuple[CartItem,...] 
     total: int
     status: str
 
-@dataclass(frozen=True)
-class Payment:
+class Payment(NamedTuple):
     id: str
     booking_id: str
     amount: int
     ts: str
     method: str
 
-@dataclass(frozen=True)
-class Event:
+class Event(NamedTuple):
     id: str
     ts: str
-    name: str
-    payload: Dict
+    name: str 
+    payload: dict
 
-@dataclass(frozen=True)
-class Rule:
+class Rule(NamedTuple):
     id: str
-    kind: str
-    payload: Dict
+    kind: str 
+    payload: dict
+

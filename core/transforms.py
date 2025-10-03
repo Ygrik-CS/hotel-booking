@@ -1,75 +1,134 @@
-from typing import Tuple, Iterable
-from functools import reduce
-from datetime import datetime, timedelta
 import json
+from datetime import datetime, timedelta
+from typing import Tuple
 
 from core.domain import (
-    Hotel,
-    RoomType,
-    RatePlan,
-    Price,
-    Availability,
-    Guest,
-    CartItem,
+    Hotel, RoomType, RatePlan, Price, Availability, Guest, CartItem
 )
 
-def _date_range(checkin: str, checkout: str) -> Tuple[str, ...]:
-    """Return tuple of date strings for nights from checkin (inclusive) to checkout (exclusive)."""
-    fmt = "%Y-%m-%d"
-    a = datetime.fromisoformat(checkin)
-    b = datetime.fromisoformat(checkout)
-    if a >= b:
-        return tuple()
-    cur = a
-    out = []
-    while cur < b:
-        out.append(cur.date().isoformat())
-        cur = cur + timedelta(days=1)
-    return tuple(out)
 
-def load_seed(path: str) -> Tuple[Tuple[Hotel, ...], Tuple[RoomType, ...], Tuple[RatePlan, ...], Tuple[Price, ...], Tuple[Availability, ...], Tuple[Guest, ...]]:
-    """
-    Load seed.json and return typed, immutable tuples of domain models.
-    Returns a tuple: (hotels, room_types, rates, prices, availability, guests)
-    """
+
+def load_seed(path: str) -> Tuple[
+    Tuple[Hotel, ...],
+    Tuple[RoomType, ...],
+    Tuple[RatePlan, ...],
+    Tuple[Price, ...],
+    Tuple[Availability, ...],
+    Tuple[Guest, ...]
+]:
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    hotels = tuple(Hotel(**h) for h in data.get("hotels", []))
-    room_types = tuple(RoomType(**rt) for rt in data.get("room_types", []))
-    rates = tuple(RatePlan(**r) for r in data.get("rates", []))
-    prices = tuple(Price(**p) for p in data.get("prices", []))
-    availability = tuple(Availability(**a) for a in data.get("availability", []))
-    guests = tuple(Guest(**g) for g in data.get("guests", []))
-    return hotels, room_types, rates, prices, availability, guests
 
-def hold_item(cart: Tuple[CartItem, ...], item: CartItem) -> Tuple[CartItem, ...]:
-    """
-    Return a new tuple with the CartItem added (if not already present).
-    Pure function: does not mutate input.
-    """
-    # use filter/map/reduce style minimally to satisfy HOF usage requirements
-    exists = any(map(lambda ci: ci.id == item.id, cart))
-    if exists:
-        return cart
-    return cart + (item,)
 
-def remove_hold(cart: Tuple[CartItem, ...], item_id: str) -> Tuple[CartItem, ...]:
-    """
-    Return a new tuple with items whose id != item_id
-    """
-    filtered = tuple(filter(lambda ci: ci.id != item_id, cart))
-    return filtered
+    #Отели
+    hotels = tuple(
+        map(lambda h: Hotel(
+            h.get("id"),
+            h.get("name"),
+            h.get("city"),
+            float(h.get("stars", [])),
+            tuple(h.get("features", []))
+        ), data.get("hotels", []))
+    )
 
-def nightly_sum(prices: Tuple[Price, ...], checkin: str, checkout: str, rate_id: str) -> int:
-    """
-    Sum nightly prices for given rate_id between checkin (inclusive) and checkout (exclusive).
-    Uses filter/map/reduce to operate over immutable tuples.
-    """
-    nights = set(_date_range(checkin, checkout))
-    # select prices matching rate_id and in desired nights
-    selected = tuple(filter(lambda p: p.rate_id == rate_id and p.date in nights, prices))
-    # map to amounts
-    amounts = tuple(map(lambda p: p.amount, selected))
-    # reduce to sum
-    total = reduce(lambda a, b: a + b, amounts, 0)
+
+    #Типы комнат
+    room_types = tuple(
+        map(lambda rt: RoomType(
+            rt.get("id"),
+            rt.get("hotel_id"),
+            rt.get("name"),
+            int(rt.get("capacity") or 0),
+            tuple(rt.get("beds", [])),
+            tuple(rt.get("features", []))
+        ), data.get("room_types", []))
+    )
+
+
+    #Тарифные планы
+    rate_plans = tuple(
+        map(lambda rp: RatePlan(
+            rp.get("id"),
+            rp.get("hotel_id") or "",
+            rp.get("room_type_id") or "",
+            rp.get("name") or "",
+            rp.get("meal") or "",
+            bool(rp.get("refundable", False)),
+            rp.get("cancel_before_days")
+        ), data.get("rates", []))
+    )
+
+
+    #Цены
+    prices_data = data.get("prices", [])
+    prices = []
+    counter = 1
+    for i in prices_data:
+        pid = i.get("id", f"price_{counter}")
+        rate_id = i.get("rate_id", "")
+        date_str = i.get("date", "")
+        amount = int(i.get("price", i.get("amount", 0)))
+        currency = i.get("currency", "KZT")
+        prices.append(Price(pid, rate_id, date_str, amount, currency))
+        counter += 1
+    prices = tuple(prices)
+
+
+    #Доступность
+    availability_data = data.get("availability", [])
+    availability = []
+    counter = 1
+    for i in availability_data:
+        aid = i.get("id", f"av_{counter}")
+        room_type_id = i.get("room_type_id", "")
+        date_str = i.get("date", "")
+        available = int(i.get("available", 0))
+        availability.append(Availability(aid, room_type_id, date_str, available))
+        counter += 1
+    availability = tuple(availability)
+
+
+    #Гости
+    guests = tuple(
+        map(lambda g: Guest(
+            g.get("id"),
+            g.get("name"),
+            g.get("email") or ""
+        ), data.get("guests", []))
+    )
+
+    return hotels, room_types, rate_plans, prices, availability, guests
+
+
+
+#Корзина
+def hold_item(cart: tuple[CartItem, ...], item: CartItem) -> tuple[CartItem, ...]:
+    return cart + (item, )
+
+
+
+def remove_hold(cart: tuple[CartItem, ...], item_id: str) -> tuple[CartItem, ...]:
+    return tuple(filter(lambda x: x.id != item_id, cart))
+
+
+
+#Подсчёт цены
+def nightly_sum(prices: tuple[Price, ...], checkin: str, checkout: str, rate_id: str) -> int:
+    if not checkin or not checkout:
+        return 0
+
+    try:
+        start = datetime.fromisoformat(checkin)
+        end = datetime.fromisoformat(checkout)
+    except:
+        return 0
+
+    total = 0
+    cur = start
+    while cur < end:
+        cur_str = cur.date().isoformat()
+        for p in prices:
+            if p.rate_id == rate_id and p.date == cur_str:
+                total += int(p.amount)
+        cur += timedelta(days=1)
     return total
