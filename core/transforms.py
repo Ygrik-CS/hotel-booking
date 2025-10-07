@@ -120,7 +120,7 @@ def nightly_sum(prices: tuple[Price, ...], checkin: str, checkout: str, rate_id:
     try:
         start = datetime.fromisoformat(checkin)
         end = datetime.fromisoformat(checkout)
-    except:
+    except:  # noqa: E722
         return 0
 
     total = 0

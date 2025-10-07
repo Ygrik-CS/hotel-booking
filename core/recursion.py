@@ -1,4 +1,3 @@
-
 from datetime import datetime, timedelta
 from core.domain import RatePlan, Rule
 
@@ -14,6 +13,7 @@ def split_date_range(checkin: str, checkout: str) -> tuple[str, ...]:
 
     return (one_day,) + split_date_range(next_day, checkout)
 
+
 def apply_rate_inheritance(rate: RatePlan, rules: tuple[Rule, ...]) -> RatePlan:
     if not rules:
         return rate
@@ -22,10 +22,26 @@ def apply_rate_inheritance(rate: RatePlan, rules: tuple[Rule, ...]) -> RatePlan:
 
     if rule.kind == "refundable":
         if "refundable" in rule.payload:
-            rate.refundable = rule.payload["refundable"]
+            rate = RatePlan(
+                id=rate.id,
+                hotel_id=rate.hotel_id,
+                room_type_id=rate.room_type_id,
+                title=rate.title,
+                meal=rate.meal,
+                refundable=rule.payload["refundable"],
+                cancel_before_days=rate.cancel_before_days
+            )
 
     elif rule.kind == "cancel_before":
         if "days" in rule.payload:
-            rate.cancel_before_days = rule.payload["days"]
+            rate = RatePlan(
+                id=rate.id,
+                hotel_id=rate.hotel_id,
+                room_type_id=rate.room_type_id,
+                title=rate.title,
+                meal=rate.meal,
+                refundable=rate.refundable,
+                cancel_before_days=rule.payload["days"]
+            )
 
     return apply_rate_inheritance(rate, rules[1:])

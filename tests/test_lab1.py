@@ -1,6 +1,5 @@
-import pytest
 from core.domain import Guest, Price, Availability, CartItem
-from core.transforms import nightly_sum, hold_item, remove_hold
+from core.transforms import hold_item, remove_hold
 
 def test_guest():
     g = Guest(id="g1", name="Alice", email="alice@mail.com")
