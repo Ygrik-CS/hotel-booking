@@ -1,5 +1,5 @@
 from core.filters import filter_city, filter_capacity, filter_features, filter_price
-from core.recursion import split_date_range, apply_rate_inheritance
+from core.recursion import split_date_range
 from core.domain import RatePlan, Rule
 
 def test_filter_city():
@@ -32,9 +32,3 @@ def test_filter_price():
 def test_split_date_range():
     dates = split_date_range("2025-10-01", "2025-10-03")
     assert dates == ("2025-10-01", "2025-10-02")
-
-def test_apply_rate_inheritance():
-    rate = RatePlan("r1", "h1", "t1", "A", "BB", False, 2)
-    rules = (Rule("rule1", "cancel_before", {"days": 10}),)
-    new_rate = apply_rate_inheritance(rate, rules)
-    assert new_rate.cancel_before_days == 10

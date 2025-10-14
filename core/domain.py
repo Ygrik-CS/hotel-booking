@@ -76,3 +76,7 @@ class Rule(NamedTuple):
     kind: str 
     payload: dict
 
+
+
+#hotel = Hotel(id="1", name="Grand", city="Paris", stars=5, features=("WiFi", "Pool"))
+#room = RoomType(id="101", hotel_id="1", name="Suite", capacity=2, beds=("King",), features=("AC",))

@@ -2,7 +2,7 @@ from core.domain import Guest, Price, Availability, CartItem
 from core.transforms import hold_item, remove_hold
 
 def test_guest():
-    g = Guest(id="g1", name="Alice", email="alice@mail.com")
+    g = Guest(id="g1", name="Alice", email="alice228@mail.com")
     assert g.id == "g1"
     assert g.name == "Alice"
 
@@ -30,3 +30,9 @@ def test_remove_hold():
     new_cart = remove_hold(cart, "c1")
     assert len(new_cart) == 1
     assert new_cart[0].id == "c2"
+
+
+
+
+
+
