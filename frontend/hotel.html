@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <title>Hotels — Results</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="hotel.js"></script>
 </head>
+
 <body class="bg-slate-50 text-slate-800">
   <header class="border-b bg-white sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
 
-  <div class="flex items-center gap-2 border rounded-full px-4 py-2 shadow-sm bg-white">
-    <span class="text-pink-500"><i class='bx bx-current-location'></i></span>
-    <input id="qCity" type="text" value="Almaty" placeholder="Enter city" class="outline-none bg-transparent w-40 text-slate-700" />
-  </div>
+      <div class="flex items-center gap-2 border rounded-full px-4 py-2 shadow-sm bg-white">
+        <span class="text-pink-500"><i class='bx bx-current-location'></i></span>
+        <input id="qCity" type="text" value="Almaty" placeholder="Enter city"
+          class="outline-none bg-transparent w-40 text-slate-700" />
+      </div>
 
-    <!-- даты -->
-  <div class="flex items-center gap-2 border rounded-full px-4 py-2 shadow-sm">
-    <input id="qIn" type="date" class="outline-none" />
-    <span class="text-slate-400">–</span>
-    <input id="qOut" type="date" class="outline-none" />
-  </div>
+      <!-- даты -->
+      <div class="flex items-center gap-2 border rounded-full px-4 py-2 shadow-sm">
+        <input id="qIn" type="date" class="outline-none" />
+        <span class="text-slate-400">–</span>
+        <input id="qOut" type="date" class="outline-none" />
+      </div>
 
       <!-- гочсти -->
       <div class="flex items-center gap-2 border rounded-full px-4 py-2 shadow-sm">
         <select id="qRooms" class="outline-none">
-          <option>1 room</option><option>2 rooms</option><option>3 rooms</option>
+          <option>1 room</option>
+          <option>2 rooms</option>
+          <option>3 rooms</option>
         </select>
         <select id="qAdults" class="outline-none">
-          <option>2 adults</option><option>1 adult</option><option>3 adults</option><option>4 adults</option><option>5 adults</option>
+          <option>2 adults</option>
+          <option>1 adult</option>
+          <option>3 adults</option>
+          <option>4 adults</option>
+          <option>5 adults</option>
         </select>
         <select id="qChildren" class="outline-none">
-          <option>0 children</option><option>1 child</option><option>2 children</option>
+          <option>0 children</option>
+          <option>1 child</option>
+          <option>2 children</option>
         </select>
       </div>
       <!-- поиск -->
-      <button id="qSearch" class="ml-auto bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 flex items-center gap-2">
-        <i class='bx bx-search' ></i> <span>Search</span>
+      <button id="qSearch"
+        class="ml-auto bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 flex items-center gap-2">
+        <i class='bx bx-search'></i> <span>Search</span>
       </button>
     </div>
   </header>
@@ -49,13 +61,18 @@
       <h2 class="font-semibold mb-3">Search Properties</h2>
 
       <label class="text-sm text-slate-600">Property name</label>
-      <input id="fName" type="text" placeholder="Property name" class="w-full border rounded-lg px-3 py-2 mt-1 mb-4"/>
+      <input id="fName" type="text" placeholder="Property name" class="w-full border rounded-lg px-3 py-2 mt-1 mb-4" />
 
-      <p class="text-sm font-semibold mb-2">Popular Filters for <span id="cityTag" class="font-semibold">Almaty</span></p>
-      <label class="flex items-center gap-2 mb-2"><input id="aBreakfast" type="checkbox" class="accent-blue-600">Breakfast included</label>
-      <label class="flex items-center gap-2 mb-2"><input id="aHotel" type="checkbox" class="accent-blue-600">Hotel</label>
-      <label class="flex items-center gap-2 mb-2"><input id="aMuseum" type="checkbox" class="accent-blue-600">Central State Museum of the Republic of Kazakhstan</label>
-      <label class="flex items-center gap-2 mb-2"><input id="aGreat" type="checkbox" class="accent-blue-600">Great 9+</label>
+      <p class="text-sm font-semibold mb-2">Popular Filters for <span id="cityTag" class="font-semibold">Almaty</span>
+      </p>
+      <label class="flex items-center gap-2 mb-2"><input id="aBreakfast" type="checkbox"
+          class="accent-blue-600">Breakfast included</label>
+      <label class="flex items-center gap-2 mb-2"><input id="aHotel" type="checkbox"
+          class="accent-blue-600">Hotel</label>
+      <label class="flex items-center gap-2 mb-2"><input id="aMuseum" type="checkbox" class="accent-blue-600">Central
+        State Museum of the Republic of Kazakhstan</label>
+      <label class="flex items-center gap-2 mb-2"><input id="aGreat" type="checkbox" class="accent-blue-600">Great
+        9+</label>
       <label class="flex items-center gap-2 mb-2"><input id="aPool" type="checkbox" class="accent-blue-600">Pool</label>
 
       <div class="my-4 border-t"></div>
@@ -102,7 +119,9 @@
 
       <div id="list" class="space-y-4">
         <!-- карточка 1 -->
-        <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row" data-name="Hotel Avrora" data-city="Almaty" data-rating="6.1" data-price="39" data-breakfast="true" data-pool="false" data-museum="true" data-great="false" data-hotel="true">
+        <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row" data-name="Hotel Avrora"
+          data-city="Almaty" data-rating="6.1" data-price="39" data-breakfast="true" data-pool="false"
+          data-museum="true" data-great="false" data-hotel="true">
           <a href="https://example.com/avrora" target="_blank" class="sm:w-64 shrink-0 block relative">
             <img src="images/hotelbeles.webp" alt="Hotel Avrora" class="h-56 sm:h-full w-full object-cover">
           </a>
@@ -121,11 +140,14 @@
             <div class="mt-3 flex justify-between items-end">
               <div class="text-right sm:text-left">
                 <div class="text-slate-500 text-xs">Total price: US$397</div>
-                <div id="calc1" class="text-slate-500 text-xs">1 room × <span class="nights">9</span> nights incl. taxes & fees</div>
+                <div id="calc1" class="text-slate-500 text-xs">1 room × <span class="nights">9</span> nights incl. taxes
+                  & fees</div>
               </div>
               <div class="text-right">
-                <div class="text-slate-600 text-xs">US$ <span class="font-semibold text-slate-900 text-lg price">39</span></div>
-                <a href="https://example.com/avrora" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
+                <div class="text-slate-600 text-xs">US$ <span
+                    class="font-semibold text-slate-900 text-lg price">39</span></div>
+                <a href="https://example.com/avrora" target="_blank"
+                  class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
                   Check Availability →
                 </a>
               </div>
@@ -134,10 +156,14 @@
         </article>
 
         <!-- карточка 2 -->
-        <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row" data-name="Oi-Qarag‘ai Mountain Resort" data-city="Almaty" data-rating="8.6" data-price="112" data-breakfast="true" data-pool="true" data-museum="false" data-great="true" data-hotel="true">
+        <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row"
+          data-name="Oi-Qarag‘ai Mountain Resort" data-city="Almaty" data-rating="8.6" data-price="112"
+          data-breakfast="true" data-pool="true" data-museum="false" data-great="true" data-hotel="true">
           <a href="oi-qaragay.html" target="_blank" class="sm:w-64 shrink-0 block relative">
-            <img src="images/1mc4g12000g5bgmp6F5AA_R_960_660_R5_D.jpg" alt="Oi-Qarag‘ai Mountain Resort" class="h-56 sm:h-full w-full object-cover">
-            <span class="absolute bottom-2 left-2 bg-pink-600 text-white text-xs px-2 py-1 rounded">First Booking Deal</span>
+            <img src="images/1mc4g12000g5bgmp6F5AA_R_960_660_R5_D.jpg" alt="Oi-Qarag‘ai Mountain Resort"
+              class="h-56 sm:h-full w-full object-cover">
+            <span class="absolute bottom-2 left-2 bg-pink-600 text-white text-xs px-2 py-1 rounded">First Booking
+              Deal</span>
             <span class="absolute bottom-2 left-40 bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded">13% off</span>
           </a>
           <div class="flex-1 p-4">
@@ -153,8 +179,10 @@
                 <div class="text-slate-500 text-xs">Breakfast included</div>
               </div>
               <div class="text-right">
-                <div class="text-slate-600 text-xs">US$ <span class="font-semibold text-slate-900 text-lg price">112</span></div>
-                <a href="oi-qaragay.html" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
+                <div class="text-slate-600 text-xs">US$ <span
+                    class="font-semibold text-slate-900 text-lg price">112</span></div>
+                <a href="oi-qaragay.html" target="_blank"
+                  class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
                   Check Availability →
                 </a>
               </div>
@@ -163,56 +191,63 @@
         </article>
 
         <!-- карточка 3 -->
-    <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row" data-name="Pana Ayusai" data-city="Almaty" data-rating="8.3" data-price="73" data-breakfast="false" data-pool="false" data-museum="false" data-great="true" data-hotel="false">
-      <a href="pana-ayusai.html" target="_blank" class="sm:w-64 shrink-0 block relative">
-        <img src="images/1mc6y12000ljsty04F602_R_960_660_R5_D.jpg" alt="Pana Ayusai" class="h-56 sm:h-full w-full object-cover">
-        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-          <span class="w-2 h-2 rounded-full bg-white/80"></span>
-          <span class="w-2 h-2 rounded-full bg-white/50"></span>
-          <span class="w-2 h-2 rounded-full bg-white/50"></span>
-          <span class="w-2 h-2 rounded-full bg-white/50"></span>
-        </div>
-      </a>
+        <article class="bg-white rounded-2xl border overflow-hidden flex flex-col sm:flex-row" data-name="Pana Ayusai"
+          data-city="Almaty" data-rating="8.3" data-price="73" data-breakfast="false" data-pool="false"
+          data-museum="false" data-great="true" data-hotel="false">
+          <a href="pana-ayusai.html" target="_blank" class="sm:w-64 shrink-0 block relative">
+            <img src="images/1mc6y12000ljsty04F602_R_960_660_R5_D.jpg" alt="Pana Ayusai"
+              class="h-56 sm:h-full w-full object-cover">
+            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+              <span class="w-2 h-2 rounded-full bg-white/80"></span>
+              <span class="w-2 h-2 rounded-full bg-white/50"></span>
+              <span class="w-2 h-2 rounded-full bg-white/50"></span>
+              <span class="w-2 h-2 rounded-full bg-white/50"></span>
+            </div>
+          </a>
 
-      <div class="flex-1 p-4">
-        <div class="flex items-center gap-2 flex-wrap">
-          <h3 class="text-lg font-semibold">Pana Ayusai</h3>
-          <span class="text-amber-400">★★★</span>
-          <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">New to Trip.com</span>
-        </div>
+          <div class="flex-1 p-4">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h3 class="text-lg font-semibold">Pana Ayusai</h3>
+              <span class="text-amber-400">★★★</span>
+              <span class="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded">New to Trip.com</span>
+            </div>
 
-        <div class="mt-1 flex items-center gap-2 text-sm">
-          <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded">8.3/10</span>
-          <span class="text-slate-700 font-medium">Very Good</span>
-          <span class="text-slate-500">• 1 review</span>
-        </div>
+            <div class="mt-1 flex items-center gap-2 text-sm">
+              <span class="bg-blue-600 text-white text-xs px-2 py-1 rounded">8.3/10</span>
+              <span class="text-slate-700 font-medium">Very Good</span>
+              <span class="text-slate-500">• 1 review</span>
+            </div>
 
-        <p class="mt-1 text-sm text-slate-500">
-          Almaty • 28.6 km from Talgar District • <a href="#" class="text-blue-600 hover:underline">Show on map</a>
-        </p>
+            <p class="mt-1 text-sm text-slate-500">
+              Almaty • 28.6 km from Talgar District • <a href="#" class="text-blue-600 hover:underline">Show on map</a>
+            </p>
 
-        <div class="mt-3 text-sm text-slate-700 flex items-center gap-3">
-        </div>
+            <div class="mt-3 text-sm text-slate-700 flex items-center gap-3">
+            </div>
 
-        <p class="mt-1 text-sm text-red-600">Only 1 left at this price</p>
+            <p class="mt-1 text-sm text-red-600">Only 1 left at this price</p>
 
-        <div class="mt-3 flex justify-between items-end">
-          <div class="text-right sm:text-left">
-            <div class="text-slate-500 text-xs">Total price: US$735</div>
-            <div class="text-slate-500 text-xs">1 room × <span class="nights">9</span> nights incl. taxes & fees</div>
+            <div class="mt-3 flex justify-between items-end">
+              <div class="text-right sm:text-left">
+                <div class="text-slate-500 text-xs">Total price: US$735</div>
+                <div class="text-slate-500 text-xs">1 room × <span class="nights">9</span> nights incl. taxes & fees
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-slate-600 text-xs">US$ <span
+                    class="font-semibold text-slate-900 text-lg price">73</span></div>
+                <a href="pana-ayusai.html" target="_blank"
+                  class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
+                  Check Availability →
+                </a>
+              </div>
+            </div>
           </div>
-          <div class="text-right">
-            <div class="text-slate-600 text-xs">US$ <span class="font-semibold text-slate-900 text-lg price">73</span></div>
-            <a href="pana-ayusai.html" target="_blank" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 mt-2">
-              Check Availability →
-            </a>
-          </div>
-        </div>
-      </div>
-    </article>
+        </article>
 
       </div>
     </section>
   </main>
-  </body>
+</body>
+
 </html>

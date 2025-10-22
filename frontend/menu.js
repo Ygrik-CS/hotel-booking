@@ -1,65 +1,53 @@
+// Массив слайдов для карусели каждая запись это объект с путём к картинке
 const slides = [
   { src: "images/pexels-fotoaibe-1743231.jpg", link: "https://example1.com" },
   { src: "images/pexels-karlsolano-2883047.jpg", link: "https://example2.com" },
   { src: "images/pexels-pixabay-164595.jpg", link: "https://example3.com" },
 ];
 
+// Код запускается, когда вся страница полностью загружена
 document.addEventListener("DOMContentLoaded", () => {
+  // Находим элементы изображения и ссылки
   const img = document.getElementById("heroCarouselImg");
   const link = document.getElementById("heroCarouselLink");
 
-  // Прелоад, чтобы не было «миганий»
+  // Прелоад изображений
+  // Это нужно, чтобы картинки заранее загрузились
   slides.forEach((s) => {
-    const im = new Image();
-    im.src = s.src;
+    const im = new Image(); // создаём объект картинки
+    im.src = s.src;         // указываем путь к файлу, браузер подгружает его в кэш
   });
 
-  // Стартовые значения
+  // Начальные значения 
+  // С какого слайда начинаем (индекс 0 — первый элемент массива)
   let i = 0;
+  // Устанавливаем первую картинку и её ссылку
   img.src = slides[i].src;
   link.href = slides[i].link;
 
-  function show(idx) {
-    // плавно скрываем
-    img.style.opacity = "0";
-    img.addEventListener(
-      "transitionend",
-      function onFadeOut() {
-        img.removeEventListener("transitionend", onFadeOut);
-        // меняем картинку и ссылку
-        img.src = slides[idx].src;
-        link.href = slides[idx].link;
-        // следующий кадр — плавно показываем
-        requestAnimationFrame(() => {
-          img.style.opacity = "1";
-        });
-      },
-      { once: true }
-    );
+  // Поиск города
+  document.getElementById('searchBtn').addEventListener('click', goSearch); // при клике на кнопку
+  document.getElementById('cityInput').addEventListener('keydown', (e) => {
+    // если пользователь нажал Enter — тоже запускаем поиск
+    if (e.key === 'Enter') goSearch();
+  });
+
+  // Функция поиска
+  function goSearch() {
+    // Получаем значение из поля ввода, убираем пробелы и переводим в нижний регистр
+    const input = document.getElementById('cityInput').value.trim().toLowerCase();
+
+    // Проверяем, содержит ли ввод название одного из доступных городов
+    if (input.includes("almaty") || input.includes("алматы")) {
+      // Если да переходим на страницу отелей для этого города
+      window.location.href = "hotels.html?city=almaty";
+    } else if (input.includes("astana") || input.includes("астана")) {
+      window.location.href = "hotels.html?city=astana";
+    } else if (input.includes("aktau") || input.includes("актау")) {
+      window.location.href = "hotels.html?city=aktau";
+    } else {
+      // Если город не найден — показываем сообщение пользователю
+      alert("Город не найден. Введите Almaty, Astana или Aktau.");
+    }
   }
-
-  // Автосмена каждые 3 секунды
-  setInterval(() => {
-    i = (i + 1) % slides.length;
-    show(i);
-  }, 3000);
 });
-// Поиск города
-document.getElementById('searchBtn').addEventListener('click', goSearch);
-document.getElementById('cityInput').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') goSearch();
-});
-
-function goSearch() {
-  const input = document.getElementById('cityInput').value.trim().toLowerCase();
-
-  if (input.includes("almaty") || input.includes("алматы")) {
-    window.location.href = "hotels.html?city=almaty";
-  } else if (input.includes("astana") || input.includes("астана")) {
-    window.location.href = "hotels.html?city=astana";
-  } else if (input.includes("aktau") || input.includes("актау")) {
-    window.location.href = "hotels.html?city=aktau";
-  } else {
-    alert("Город не найден. Введите Almaty, Astana или Aktau.");
-  }
-}

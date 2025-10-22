@@ -1,82 +1,99 @@
 from typing import NamedTuple, Tuple, Optional
 
+
+# Класс отеля, где хранятся базовые данные
 class Hotel(NamedTuple):
-    id: str
-    name: str
-    city: str
-    stars: float
-    features: Tuple[str, ...]
+    id: str  # айди отеля
+    name: str  # название
+    city: str  # город
+    stars: float  # звёзды
+    features: Tuple[str, ...]  # удобства (wifi, парковка и т.д.)
 
+
+# Тип номера в отеле
 class RoomType(NamedTuple):
-    id: str
-    hotel_id: str
-    name: str   
-    capacity: int
-    beds: Tuple[str, ...]
-    features: Tuple[str, ...]
+    id: str  # айди типа номера
+    hotel_id: str  # айди отеля
+    name: str  # название типа
+    capacity: int  # вместимость
+    beds: Tuple[str, ...]  # список кроватей
+    features: Tuple[str, ...]  # удобства номера
 
+
+# Тарифный план, описывает условия брони
 class RatePlan(NamedTuple):
-    id: str
-    hotel_id: str
-    room_type_id: str
-    title: str
-    meal: str
-    refundable: bool
-    cancel_before_days: Optional[int]
+    id: str  # айди тарифа
+    hotel_id: str  # айди отеля
+    room_type_id: str  # айди типа номера
+    title: str  # название тарифа
+    meal: str  # тип питания
+    refundable: bool  # можно ли отменить
+    cancel_before_days: Optional[int]  # за сколько дней до заезда можно отменить
 
+
+# Цена за ночь
 class Price(NamedTuple):
-    id: str
-    rate_id: str 
-    date: str
-    amount: int 
-    currency: str
+    id: str  # айди записи
+    rate_id: str  # айди тарифа
+    date: str  # дата
+    amount: int  # стоимость в копейках/тийынах
+    currency: str  # валюта
 
+
+# Доступность номеров
 class Availability(NamedTuple):
-    id: str
-    room_type_id: str 
-    date: str 
-    available: int
+    id: str  # айди записи
+    room_type_id: str  # айди типа номера
+    date: str  # дата
+    available: int  # сколько номеров свободно
 
+
+# Инфо о госте
 class Guest(NamedTuple):
-    id: str
-    name: str
-    email: str 
+    id: str  # айди гостя
+    name: str  # имя
+    email: str  # почта
 
+
+# Элемент корзины (предварительная бронь)
 class CartItem(NamedTuple):
-    id: str
-    hotel_id: str
-    room_type_id: str 
-    rate_id: str
-    checkin: str 
-    checkout: str
-    guests: int
+    id: str  # айди позиции
+    hotel_id: str  # айди отеля
+    room_type_id: str  # айди типа номера
+    rate_id: str  # айди тарифа
+    checkin: str  # дата заезда
+    checkout: str  # дата выезда
+    guests: int  # кол-во гостей
 
+
+# Бронь (уже оформленная)
 class Booking(NamedTuple):
-    id: str
-    guest_id: str 
-    items: Tuple[CartItem,...] 
-    total: int
-    status: str
+    id: str  # айди брони
+    guest_id: str  # кто забронировал
+    items: Tuple[CartItem, ...]  # список позиций из корзины
+    total: int  # итоговая сумма
+    status: str  # статус (held, confirmed, cancelled)
 
+
+# Платёж
 class Payment(NamedTuple):
-    id: str
-    booking_id: str
-    amount: int
-    ts: str
-    method: str
+    id: str  # айди платежа
+    booking_id: str  # айди брони
+    amount: int  # сумма платежа
+    ts: str  # время платежа
+    method: str  # метод оплаты (карта, нал, онлайн)
 
+
+# Событие (для системы или логов)
 class Event(NamedTuple):
-    id: str
-    ts: str
-    name: str 
-    payload: dict
+    id: str  # айди события
+    ts: str  # время
+    name: str  # тип события
+    payload: dict  # доп инфа (например, данные по брони)
 
+
+# Правило (ограничение или надбавка)
 class Rule(NamedTuple):
-    id: str
-    kind: str 
-    payload: dict
-
-
-
-#hotel = Hotel(id="1", name="Grand", city="Paris", stars=5, features=("WiFi", "Pool"))
-#room = RoomType(id="101", hotel_id="1", name="Suite", capacity=2, beds=("King",), features=("AC",))
+    id: str  # айди правила
+    kind: str  # тип (min_stay, max_stay и т.д.)
+    payload: dict  # данные правила (например, {"min_days": 2})
