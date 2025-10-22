@@ -1,90 +1,60 @@
-// Утилиты для выбора элементов: $ — один элемент, $$ — список элементов
+// Утилиты
 const $ = (s, p = document) => p.querySelector(s);
 const $$ = (s, p = document) => [...p.querySelectorAll(s)];
-// Функция, возвращающая все карточки отелей (article внутри #list)
 const cards = () => $$("#list article");
 
-// Счётчик ночей (устойчивый/robust)
-const inEl = $("#qIn"), // инпут даты заезда
-  outEl = $("#qOut"), // инпут даты выезда
-  nightsEl = $("#qNights"); // элемент, где показываем N nights
+// Счётчик ночей
+const inEl = $("#qIn"), outEl = $("#qOut"), nightsEl = $("#qNights");
 
-// Устанавливаем даты по умолчанию: завтра — заезд, через 10 дней — выезд
+// дефолтные даты
 function setDefaultDates() {
   const today = new Date();
-  const inDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + 1 // +1 день от сегодня
-  );
-  const outDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + 10 // +10 дней от сегодня
-  );
-  // valueAsDate удобно задаёт дату для input[type=date]
+  const inDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+  const outDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10);
   inEl.valueAsDate = inDate;
   outEl.valueAsDate = outDate;
-  updNights(); // сразу посчитать ночи
+  updNights();
 }
 
-// Вспомогательная разница в днях между двумя Date
-function daysBetween(a, b) {
-  return Math.round((b - a) / (1000 * 60 * 60 * 24));
-}
+function daysBetween(a, b) { return Math.round((b - a) / (1000 * 60 * 60 * 24)); }
 
-// Обновляем отображение количества ночей
 function updNights() {
-  const a = new Date(inEl.value),
-    b = new Date(outEl.value);
-  // Проверяем, что обе даты валидны и выезд позже заезда
+  const a = new Date(inEl.value), b = new Date(outEl.value);
   if (!isNaN(a) && !isNaN(b) && b > a) {
-    // Минимум 1 ночь (на случай округлений/ошибок)
     const n = Math.max(1, daysBetween(a, b));
-    // Пишем "1 night" или "2 nights"
-    nightsEl.textContent = `${n} night${n > 1 ? "s" : ""}`;
-    // Синхронно обновляем число ночей у всех элементов с классом .nights (на карточках)
+    if (nightsEl) nightsEl.textContent = `${n} night${n > 1 ? "s" : ""}`;
     $$(".nights").forEach((el) => (el.textContent = n));
   } else {
-    // Если дата некорректна очищаем поле
-    nightsEl.textContent = "";
+    if (nightsEl) nightsEl.textContent = "";
   }
 }
 
-// Когда пользователь меняет дату заезда:
 inEl.addEventListener("change", () => {
-  // Если дата выезда не задана или <= заезда — сдвигаем выезд на +1 день от заезда
   if (outEl.value && new Date(outEl.value) <= new Date(inEl.value)) {
     const d = new Date(inEl.value);
     d.setDate(d.getDate() + 1);
     outEl.valueAsDate = d;
   }
-  updNights(); // пересчитать ночи
+  updNights();
 });
-
-// Обновляем ночи при изменении даты выезда
 outEl.addEventListener("change", updNights);
-
-// Инициализация дефолтных дат при загрузке
 setDefaultDates();
 
 // Фильтры
-const priceRange = $("#fPrice"), // range для максимальной цены
-  priceLabel = $("#priceLabel"); // подпись к слайдеру (например, "$180")
-const cityTag = $("#cityTag"); // бейдж с выбранным городом
+const priceRange = $("#fPrice"),
+      priceLabel = $("#priceLabel"),
+      cityTag = $("#cityTag");
 
-// Подсчитать и показать, сколько карточек сейчас видно (не .hidden)
 function updateFound() {
   const visible = cards().filter((c) => !c.classList.contains("hidden")).length;
   $("#found").textContent = visible;
 }
 
-// Применение фильтров ко всем карточкам
 function applyFilters() {
-  const name = $("#fName").value.trim().toLowerCase(); // фильтр по названию
-  const city = $("#fCity").value; // точный город из селекта
-  const priceMax = +priceRange.value; // максимальная цена из слайдера
-  // Булевы фильтры-признаки
+  const name = $("#fName").value.trim().toLowerCase();
+  const city = $("#fCity").value;
+  const priceMax = +priceRange.value;
+
   const flags = {
     breakfast: $("#aBreakfast").checked,
     pool: $("#aPool").checked,
@@ -93,16 +63,14 @@ function applyFilters() {
     hotel: $("#aHotel").checked,
   };
 
-  // Отобразить выбранный город в бейдже и учесть город из строки поиска
   cityTag.textContent = city || $("#qCity").value || "Any";
-  let qCity = $("#qCity").value.trim().toLowerCase(); // "мягкий" поиск по городу
+  let qCity = $("#qCity").value.trim().toLowerCase();
 
-  // Пробегаемся по всем карточкам и решаем, скрывать или показывать
   cards().forEach((c) => {
-    0 // Проверки по датасетам карточки
+    // проверки по датасетам карточки
     const okName = !name || c.dataset.name.toLowerCase().includes(name);
-    const okCity = !city || c.dataset.city === city; // точное совпадение селекта
-    const okQCity = !qCity || c.dataset.city.toLowerCase().includes(qCity); // "мягкий" поиск
+    const okCity = !city || c.dataset.city === city;
+    const okQCity = !qCity || c.dataset.city.toLowerCase().includes(qCity);
     const okPrice = +c.dataset.price <= priceMax;
     const okBreakfast = !flags.breakfast || c.dataset.breakfast === "true";
     const okPool = !flags.pool || c.dataset.pool === "true";
@@ -110,36 +78,23 @@ function applyFilters() {
     const okGreat = !flags.great || c.dataset.great === "true";
     const okHotel = !flags.hotel || c.dataset.hotel === "true";
 
-    // Карточка проходит, только если прошла все активные фильтры
-    const ok =
-      okName &&
-      okCity &&
-      okQCity &&
-      okPrice &&
-      okBreakfast &&
-      okPool &&
-      okMuseum &&
-      okGreat &&
-      okHotel;
-
-    // Переключаем класс hidden (true => скрыть)
+    const ok = okName && okCity && okQCity && okPrice && okBreakfast && okPool && okMuseum && okGreat && okHotel;
     c.classList.toggle("hidden", !ok);
   });
 
-  updateFound(); // обновить счётчик найденных
-  sortCards(); // сохранить порядок после фильтрации (пересортировать видимые)
+  updateFound();
+  sortCards();
 }
 
-// Живое обновление подписи слайдера цены при движении ползунка
-priceRange.addEventListener(
-  "input",
-  (e) => (priceLabel.textContent = "$" + e.target.value)
-);
+// подпись к слайдеру цены
+priceRange.addEventListener("input", (e) => {
+  priceLabel.textContent = "$" + e.target.value;
+  applyFilters(); // live по цене
+});
 
-// Кнопки Применить и Сбросить фильтры
+// кнопки
 $("#applyBtn").addEventListener("click", applyFilters);
 $("#resetBtn").addEventListener("click", () => {
-  // Сбрасываем значения всех контролов к дефолтным
   $("#fName").value = "";
   $("#fCity").value = "Almaty";
   $("#aBreakfast").checked = false;
@@ -149,38 +104,43 @@ $("#resetBtn").addEventListener("click", () => {
   $("#aHotel").checked = false;
   priceRange.value = 280;
   priceLabel.textContent = "$280";
-  applyFilters(); // и сразу применяем
+  // показать все
+  cards().forEach((c) => c.classList.remove("hidden"));
+  updateFound();
+  sortCards();
 });
 
-// Быстрый поиск из верхней панели: кнопка и инпут города
+// быстрый поиск
 $("#qSearch").addEventListener("click", applyFilters);
 $("#qCity").addEventListener("input", applyFilters);
 
-// Сортировка карточек
+// применяем при клике на чекбоксы
+$("#aBreakfast").addEventListener("change", applyFilters);
+$("#aPool").addEventListener("change", applyFilters);
+$("#aMuseum").addEventListener("change", applyFilters);
+$("#aGreat").addEventListener("change", applyFilters);
+$("#aHotel").addEventListener("change", applyFilters);
+
+// сортировка
 function sortCards() {
-  const mode = $("#sort").value; // режим сортировки из селекта
-  const list = $("#list"); // контейнер со списком карточек
-  // Берём только видимые карточки (иначе спрятанные «перемешаются» зря)
+  const mode = $("#sort").value;
+  const list = $("#list");
   const items = cards().filter((c) => !c.classList.contains("hidden"));
 
-  // Сортировка по выбранному критерию
   items.sort((a, b) => {
-    const pa = +a.dataset.price,
-      pb = +b.dataset.price; // цены
-    const ra = +a.dataset.rating,
-      rb = +b.dataset.rating; // рейтинги
-    if (mode === "priceAsc") return pa - pb; // по цене возр
-    if (mode === "priceDesc") return pb - pa; // по цене убыв
-    if (mode === "ratingDesc") return rb - ra; // по рейтингу убыв
-    return 0; // без изменений
+    const pa = +a.dataset.price, pb = +b.dataset.price;
+    const ra = +a.dataset.rating, rb = +b.dataset.rating;
+    if (mode === "priceAsc") return pa - pb;
+    if (mode === "priceDesc") return pb - pa;
+    if (mode === "ratingDesc") return rb - ra;
+    return 0;
   });
 
-  // Переупорядочиваем элементы в DOM в новом порядке
   items.forEach((el) => list.appendChild(el));
 }
-
-// Обновлять порядок при смене селекта сортировки
 $("#sort").addEventListener("change", sortCards);
 
-// Первичная инициализация: применить фильтры сразу
+// первичная инициализация
 applyFilters();
+// ===== Перенос данных на booking.html =====
+

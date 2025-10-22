@@ -9,7 +9,7 @@ def quote_offer(hotel_id, room_type, checkin, checkout, guests):
     tax, markup = 0.12, 0.05
     days = (date.fromisoformat(checkout) - date.fromisoformat(checkin)).days
     total = int(base.get(room_type, 18000) * days * (1 + tax + markup))
-    available = room_type != "Люкс"
+    available = room_type != "Люкс"    
     return total, available
 
 runs = int(input("Введите количество запросов: "))

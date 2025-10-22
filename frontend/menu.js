@@ -25,29 +25,28 @@ document.addEventListener("DOMContentLoaded", () => {
   img.src = slides[i].src;
   link.href = slides[i].link;
 
-  // Поиск города
-  document.getElementById('searchBtn').addEventListener('click', goSearch); // при клике на кнопку
-  document.getElementById('cityInput').addEventListener('keydown', (e) => {
-    // если пользователь нажал Enter — тоже запускаем поиск
-    if (e.key === 'Enter') goSearch();
-  });
-
-  // Функция поиска
-  function goSearch() {
-    // Получаем значение из поля ввода, убираем пробелы и переводим в нижний регистр
-    const input = document.getElementById('cityInput').value.trim().toLowerCase();
-
-    // Проверяем, содержит ли ввод название одного из доступных городов
-    if (input.includes("almaty") || input.includes("алматы")) {
-      // Если да переходим на страницу отелей для этого города
-      window.location.href = "hotels.html?city=almaty";
-    } else if (input.includes("astana") || input.includes("астана")) {
-      window.location.href = "hotels.html?city=astana";
-    } else if (input.includes("aktau") || input.includes("актау")) {
-      window.location.href = "hotels.html?city=aktau";
-    } else {
-      // Если город не найден — показываем сообщение пользователю
-      alert("Город не найден. Введите Almaty, Astana или Aktau.");
-    }
-  }
+// Поиск города
+document.getElementById('searchBtn').addEventListener('click', goSearch); // при клике на кнопку
+document.getElementById('cityInput').addEventListener('keydown', (e) => {
+  // если пользователь нажал Enter — тоже запускаем поиск
+  if (e.key === 'Enter') goSearch();
 });
+
+// Функция поиска
+function goSearch() {
+  // Получаем значение из поля ввода, убираем пробелы и переводим в нижний регистр
+  const input = document.getElementById('cityInput').value.trim().toLowerCase();
+
+  // Проверяем, содержит ли ввод название одного из доступных городов
+  if (input.includes("almaty") || input.includes("алматы")) {
+    // Если да переходим на страницу отелей для этого города
+    window.location.href = "hotels.html?city=almaty";
+  } else if (input.includes("astana") || input.includes("астана")) {
+    window.location.href = "hotels.html?city=astana";
+  } else if (input.includes("aktau") || input.includes("актау")) {
+    window.location.href = "hotels.html?city=aktau";
+  } else {
+    // Если город не найден — показываем сообщение пользователю
+    alert("Город не найден. Введите Almaty, Astana или Aktau.");
+  }
+}

@@ -55,12 +55,12 @@ def test_quote_offer_caching():
     rules = (Rule("r1", "tax", ("value", 10)),)   # type: ignore
 
     start = time.time()
-    for _ in range(200):
+    for i in range(200):
         quote_offer("h1", "r1", "2025-10-01", "2025-10-02", prices, avail, rules)
     first_time = time.time() - start
 
     start = time.time()
-    for _ in range(200):
+    for i in range(200):
         quote_offer("h1", "r1", "2025-10-01", "2025-10-02", prices, avail, rules)
     second_time = time.time() - start
 

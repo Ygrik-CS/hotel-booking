@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timedelta
 from typing import Tuple
+from core.ftypes import Maybe, Either
 
 from core.domain import Hotel, RoomType, RatePlan, Price, Availability, Guest, CartItem
 
@@ -142,3 +143,28 @@ def nightly_sum(
                 total += int(p.amount)
         cur += timedelta(days=1)
     return total
+
+
+
+
+
+
+def safe_rate(rates, rate_id):
+    for r in rates:
+        if getattr(r, "id", None) == rate_id:
+            return Maybe.some(r)
+    return Maybe.nothing()
+
+
+def validate_cart_item(item, availability, rules=(), room_types=()):
+    # просто проверяем что даты не пустые
+    if not getattr(item, "checkin", None) or not getattr(item, "checkout", None):
+        return Either.left({"error": "invalid_dates"})
+    return Either.right(item)
+
+
+def validate_booking(booking, prices=(), availability=(), rules=(), rates=(), room_types=()):
+    # просто проверяем что внутри есть хотя бы один item
+    if not getattr(booking, "items", ()):
+        return Either.left({"error": "no_items"})
+    return Either.right(booking)
